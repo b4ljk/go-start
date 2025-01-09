@@ -10,14 +10,16 @@ type UserHandler struct {
 	userService *services_get.UserService
 }
 
-func NewUserHandler() *UserHandler {
+func NewUserHandler(user_service *services_get.UserService) *UserHandler {
+
 	return &UserHandler{
-		userService: services_get.NewUserService(),
+		userService: user_service,
 	}
 }
 
 func (h *UserHandler) GetUsers(c *gin.Context) {
-	users, err := h.userService.GetUsers2()
+
+	users, err := h.userService.GetUserByID(c.Request.Context())
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
