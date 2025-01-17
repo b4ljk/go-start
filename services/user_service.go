@@ -11,20 +11,12 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type UserService struct {
-	queries *db.Queries
-	pool    *pgxpool.Pool
+type DBService struct {
+	Queries *db.Queries
+	Pool    *pgxpool.Pool
 }
 
-func (u *UserService) GetUserByID(ctx context.Context) (any, error) {
-	response, err := u.queries.GetUserByID(ctx, 0)
-	if err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
-func NewUserService() (*UserService, error) {
+func NewDBService() (*DBService, error) {
 	env := utils.NewEnv()
 	log.Printf("Database configuration: Host=%s, Port=%s, DB=%s, User=%s",
 		env.DBHost, env.DBPort, env.DBName, env.DBUser)
@@ -74,8 +66,8 @@ func NewUserService() (*UserService, error) {
 
 	log.Print("Database connection successful!")
 
-	return &UserService{
-		queries: db.New(pool),
-		pool:    pool,
+	return &DBService{
+		Queries: db.New(pool),
+		Pool:    pool,
 	}, nil
 }

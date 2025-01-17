@@ -22,6 +22,10 @@ SELECT *
 FROM users
 ORDER BY created_at DESC
 LIMIT $1 OFFSET $2;
+-- name: ListAllUsers :many
+SELECT *
+FROM users
+ORDER BY created_at DESC;
 -- name: UpdateUser :one
 UPDATE users
 SET email = COALESCE(sqlc.narg('email'), email),
